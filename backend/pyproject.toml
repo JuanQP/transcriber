@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "transcriber"
+version = "0.1.0"
+description = "Transcribe your audios and videos with this app"
+authors = ["JuanQP <quinterosp.juan@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "^4.2.6"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
