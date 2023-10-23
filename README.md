@@ -1,5 +1,11 @@
 # Transcriber
 
+## Run the project
+
+👷 Work in progress...
+
+## Development
+
 Services
 
 ```sh

@@ -43,6 +43,5 @@ class ProjectViewSet(viewsets.ModelViewSet):
     filter_backends = [filters.SearchFilter]
     search_fields = ["name"]
 
-
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)

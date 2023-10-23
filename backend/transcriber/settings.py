@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'app',
     'rest_framework',
     'django_filters',
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
@@ -143,3 +144,12 @@ CELERY_BROKER_URL = env("CELERY_BROKER_URL")
 CELERY_TIMEZONE = "America/Argentina/Buenos_Aires"
 CELERY_WORKER_PREFETCH_MULTIPLIER = 1
 CELERY_WORKER_CONCURRENCY = 1
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
