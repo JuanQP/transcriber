@@ -29,9 +29,9 @@ def transcribe(audio_id: int):
     segments, _ = model.transcribe(audio.file.path, beam_size=5)
 
     audio.transcription = ""
-    audio_vtt_filename = re.sub(r"\.\w+$", ".vtt", audio.file.name.split("/")[-1])
-    audio_vtt_path = f"{settings.MEDIA_ROOT}/{audio.project.id}/{audio_vtt_filename}"
-    with open(audio_vtt_path, "w") as vtt_file:
+    audio_vtt_fullpath = re.sub(r"\.\w+$", ".vtt", audio.file.path)
+    audio_vtt_storage_path = re.sub(r"\.\w+$", ".vtt", audio.file.name)
+    with open(audio_vtt_fullpath, "w") as vtt_file:
         vtt_file.write("WEBVTT\n\n")
 
         for segment in segments:
@@ -45,5 +45,6 @@ def transcribe(audio_id: int):
             vtt_file.write(f"{start} --> {end}\n")
             vtt_file.write(f"{text.strip()}\n\n")
 
+    audio.subtitles = audio_vtt_storage_path
     audio.status = Audio.TranscriptionStatus.FINISHED
     audio.save()
