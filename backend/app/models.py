@@ -11,6 +11,26 @@ class Project(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
 
+    @property
+    def root_folder(self):
+        return self.folders.filter(parent_folder__isnull=True).first()
+
+class Folder(models.Model):
+    """Folder in which every audio will be stored"""
+    name = models.CharField(max_length=200)
+    parent_folder = models.ForeignKey(
+        "Folder",
+        related_name="children",
+        null=True,
+        default=None,
+        on_delete=models.CASCADE,
+    )
+    project = models.ForeignKey(
+        Project,
+        related_name="folders",
+        on_delete=models.CASCADE,
+    )
+
 class Audio(models.Model):
     class TranscriptionStatus(models.TextChoices):
         PENDING = "PE", "Pending"
@@ -19,6 +39,12 @@ class Audio(models.Model):
 
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     """Project which contains this Audio"""
+    folder = models.ForeignKey(
+        Folder,
+        related_name="files",
+        on_delete=models.CASCADE,
+    )
+    """Container folder of this Audio"""
     file = models.FileField(upload_to=audio_path)
     """File of this Audio"""
     subtitles = models.FileField(upload_to=audio_path, default=None, null=True)

@@ -14,7 +14,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from app.views import AudioViewSet, ProjectViewSet
+from app.views import AudioViewSet, FolderViewSet, ProjectViewSet
 from django.contrib import admin
 from django.urls import include, path
 from django.conf import settings
@@ -27,6 +27,7 @@ from rest_framework_simplejwt.views import (
 
 router = DefaultRouter()
 router.register("audios", AudioViewSet, basename="audio")
+router.register("folders", FolderViewSet, basename="folder")
 router.register("projects", ProjectViewSet, basename="project")
 
 urlpatterns = [
