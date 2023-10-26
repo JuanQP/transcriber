@@ -24,11 +24,15 @@ class AudioViewSet(
 ):
     queryset = Audio.objects.all()
     serializer_class = AudioListSerializer
-    filter_backends = [DjangoFilterBackend]
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.SearchFilter,
+    ]
     filterset_fields = [
         "project",
         "status",
     ]
+    search_fields = ["transcription"]
 
     def get_serializer_class(self):
         if self.action == "create":
