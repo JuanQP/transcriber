@@ -15,7 +15,7 @@ def seconds_to_str(t: int) -> str:
 
     https://stackoverflow.com/a/1384710/4792093
     """
-    return "%02d:%02d:%02d,%03d" % \
+    return "%02d:%02d:%02d.%03d" % \
         reduce(lambda ll,b : divmod(ll[0],b) + ll[1:],
             [(round(t*1000),),1000,60,60])
 
