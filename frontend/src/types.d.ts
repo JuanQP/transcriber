@@ -34,3 +34,7 @@ type AudioStatus = "PE" | "FI" | "TR"
  * Audio shape used in lists
  */
 type ListAudio = Pick<Audio, "id" | "project" | "folder" | "file" | "status">
+
+type MessageResponse = {
+  message: string;
+}
