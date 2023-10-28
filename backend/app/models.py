@@ -37,7 +37,11 @@ class Audio(models.Model):
         FINISHED = "FI", "Finished"
         TRANSCRIBING = "TR", "Transcribing"
 
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    project = models.ForeignKey(
+        Project,
+        related_name="audios",
+        on_delete=models.CASCADE,
+    )
     """Project which contains this Audio"""
     folder = models.ForeignKey(
         Folder,

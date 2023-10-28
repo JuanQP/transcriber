@@ -3,6 +3,7 @@ from app.models import Audio, Folder, Project
 
 class ProjectSerializer(serializers.ModelSerializer):
     root_folder = serializers.PrimaryKeyRelatedField(read_only=True)
+    audio_count = serializers.SerializerMethodField()
     class Meta:
         model = Project
         fields = [
@@ -10,11 +11,15 @@ class ProjectSerializer(serializers.ModelSerializer):
             "name",
             "root_folder",
             "owner",
+            "audio_count",
         ]
         read_only_fields = [
             "root_folder",
             "owner",
         ]
+
+    def get_audio_count(self, obj):
+        return obj.audios.count()
 
 class AudioListSerializer(serializers.ModelSerializer):
     class Meta:
