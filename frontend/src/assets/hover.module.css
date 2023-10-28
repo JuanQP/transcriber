@@ -3,3 +3,9 @@
         font-size: 1.5rem;
     }
 }
+
+.hoverable {
+    &:hover {
+        border-color: var(--mantine-color-gray-6);
+    }
+}

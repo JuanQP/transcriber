@@ -12,9 +12,9 @@ type LeafFolder = Pick<Folder, "id" | "name">
 
 type Folder = {
   id: number;
+  project: number;
   name: string;
   children: LeafFolder[];
-  files: ListAudio[];
   project_name: string;
 }
 

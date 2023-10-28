@@ -88,7 +88,6 @@ class FolderLeafSerializer(serializers.ModelSerializer):
         ]
 
 class FolderSerializer(serializers.ModelSerializer):
-    files = AudioListSerializer(many=True, read_only=True)
     children = FolderLeafSerializer(many=True, read_only=True)
     project_name = serializers.StringRelatedField(source="project.name")
     class Meta:
@@ -97,8 +96,11 @@ class FolderSerializer(serializers.ModelSerializer):
             "id",
             "name",
             "children",
-            "files",
             "project_name",
+            "project",
+        ]
+        read_only_fields = [
+            "project",
         ]
 
 class FolderCreateSerializer(serializers.ModelSerializer):

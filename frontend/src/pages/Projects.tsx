@@ -100,6 +100,11 @@ export function Projects() {
           Delete{selectedCount === 0 ? " " : ` ${selectedCount} `}projects
         </Button>
       </Flex>
+      {projects.length !== 0 ? null : (
+        <Text c="dimmed">
+          There are no projects yet. Click on <Text span fw="bold">New project</Text> to start!
+        </Text>
+      )}
       <SimpleGrid cols={{ xs: 2, md: 4 }}>
         {projects.map(project => (
           <ProjectCard

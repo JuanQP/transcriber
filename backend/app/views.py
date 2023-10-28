@@ -32,7 +32,7 @@ class AudioViewSet(
         "project",
         "status",
     ]
-    search_fields = ["transcription"]
+    search_fields = ["file"]
 
     def get_serializer_class(self):
         if self.action == "create":

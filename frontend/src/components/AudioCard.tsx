@@ -2,6 +2,7 @@ import { ActionIcon, Badge, BadgeProps, Flex, Loader, MantineStyleProp, Paper, T
 import { IconCheck, IconHourglass, IconRepeat } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 import { getFilename } from "../utils";
+import classes from '../assets/hover.module.css';
 
 const SELECTED_STYLE: MantineStyleProp = (theme) => ({ borderColor: theme.colors.blue[6] })
 
@@ -45,6 +46,7 @@ export function AudioCard({isSelected = false, ...props}: Props) {
       key={props.audio.id}
       shadow={isSelected ? "md" : "none"}
       p="md"
+      className={classes.hoverable}
       onClick={() => props.onClick(props.audio.id)}
     >
       <Flex justify="space-between" align="center">

@@ -1,19 +1,38 @@
 import { Button, FileButton, Flex, Loader, SimpleGrid, Stack, Text, Title } from "@mantine/core";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import * as folderService from "../services/folderService"
 import * as audioService from "../services/audioService"
 import { IconTrash, IconUpload } from "@tabler/icons-react";
 import { AudioCard } from "../components/AudioCard";
 import { useState } from "react";
+import { AudioFilters, AudioSearchSchema } from "../components/AudioFilters";
 
 export function FolderDetail() {
   const { id } = useParams()
   const [selectedAudios, setSelectedAudios] = useState<number[]>([])
+  const [audioFilters, setAudioFilters] = useState<AudioSearchSchema>({
+    search: "",
+    status: null
+  })
   const queryClient = useQueryClient()
   const { data: folder } = useQuery({
     queryKey: ["folders", id],
     queryFn: () => folderService.get(id!)
+  })
+  const { data: audios, isFetching: isFetchingAudios } = useQuery({
+    queryKey: [
+      "folders",
+      id,
+      "audios",
+      audioFilters.search,
+      audioFilters.status,
+    ],
+    queryFn: () => audioService.getAll({
+      project: folder?.project,
+      ...audioFilters
+    }),
+    placeholderData: keepPreviousData,
   })
   const audioUploadMutation = useMutation({
     mutationFn: audioService.create,
@@ -49,7 +68,7 @@ export function FolderDetail() {
     setSelectedAudios([])
   }
 
-  if(!folder) {
+  if(!folder || !audios) {
     return <Loader />
   }
 
@@ -59,7 +78,11 @@ export function FolderDetail() {
       <Text>You can upload audios or videos here to transcribe them.</Text>
       <Flex gap="md">
         <FileButton accept="audio/*,video/*" multiple onChange={handleAudioUpload}>
-          {(props) => <Button {...props} color="green" leftSection={<IconUpload />}>Upload files</Button>}
+          {(props) => (
+            <Button {...props} color="green" leftSection={<IconUpload />}>
+              Upload files
+            </Button>
+          )}
         </FileButton>
         <Button
           disabled={selectedAudios.length === 0}
@@ -70,8 +93,22 @@ export function FolderDetail() {
           Delete{selectedAudios.length === 0 ? " " : ` ${selectedAudios.length} `}audios
         </Button>
       </Flex>
+      <AudioFilters
+        defaultValues={audioFilters}
+        isLoading={isFetchingAudios}
+        onFilter={setAudioFilters}
+      />
+      {audios.length !== 0 ? (
+        <Text>
+          {audios.length} audio(s) found
+        </Text>
+      ) : (
+        <Text c="dimmed">
+          No audios. Click on Upload files and upload your audios and videos
+        </Text>
+      )}
       <SimpleGrid cols={{ base: 1, sm: 2, md: 4 }}>
-        {folder.files.map(audio => (
+        {audios.map(audio => (
           <AudioCard
             key={audio.id}
             audio={audio}

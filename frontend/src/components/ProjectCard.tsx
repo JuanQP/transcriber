@@ -1,6 +1,7 @@
 import { ActionIcon, Flex, MantineStyleProp, Paper, Text } from "@mantine/core";
 import { IconEdit } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
+import classes from '../assets/hover.module.css';
 
 const SELECTED_STYLE: MantineStyleProp = (theme) => ({ borderColor: theme.colors.blue[6] })
 
@@ -21,6 +22,7 @@ export function ProjectCard(props: Props) {
   return (
     <Paper
       withBorder
+      className={classes.hoverable}
       style={props.isSelected ? SELECTED_STYLE : undefined}
       key={props.project.id}
       shadow={props.isSelected ? "md" : "none"}

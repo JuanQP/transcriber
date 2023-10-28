@@ -20,6 +20,13 @@ export async function get(id: ID) {
   return data
 }
 
+export async function getAll(params: any) {
+  const { data } = await axios.get<Audio[]>(`${BACKEND_URL}/audios/`, {
+    params
+  })
+  return data
+}
+
 export async function remove(id: ID) {
   await axios.delete(`${BACKEND_URL}/audios/${id}/`)
 }
