@@ -1,7 +1,10 @@
-import { Text } from "@mantine/core";
+import { Box, Text, Title } from "@mantine/core";
 
 export function Projects() {
   return (
-    <Text>Hi! This is the Projects page.</Text>
+    <Box>
+      <Title>Your Projects</Title>
+      <Text>Hi! This is the Projects page.</Text>
+    </Box>
   )
 }
