@@ -1,6 +1,7 @@
 import { ActionIcon, Badge, BadgeProps, Flex, Loader, MantineStyleProp, Paper, Text, rem } from "@mantine/core";
 import { IconCheck, IconHourglass, IconRepeat } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
+import { getFilename } from "../utils";
 
 const SELECTED_STYLE: MantineStyleProp = (theme) => ({ borderColor: theme.colors.blue[6] })
 
@@ -9,10 +10,6 @@ interface Props {
   isSelected?: boolean;
   onClick: (id: number) => void;
   onRetranscribeClick: (id: number) => void;
-}
-
-function getFilename(path: string) {
-  return path.split("/").slice(-1)[0]
 }
 
 const STATUS_BADGE: Record<AudioStatus, BadgeProps> = {

@@ -56,7 +56,7 @@ export function FolderDetail() {
   return (
     <Stack>
       <Title>{folder.project_name}</Title>
-      <Text>You can upload files here to transcribe them.</Text>
+      <Text>You can upload audios or videos here to transcribe them.</Text>
       <Flex gap="md">
         <FileButton accept="audio/*,video/*" multiple onChange={handleAudioUpload}>
           {(props) => <Button {...props} color="green" leftSection={<IconUpload />}>Upload files</Button>}

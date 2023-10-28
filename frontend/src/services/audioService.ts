@@ -15,6 +15,11 @@ export async function create(values: AudioCreateSchema) {
   return data
 }
 
+export async function get(id: ID) {
+  const { data } = await axios.get<Audio>(`${BACKEND_URL}/audios/${id}/`)
+  return data
+}
+
 export async function remove(id: ID) {
   await axios.delete(`${BACKEND_URL}/audios/${id}/`)
 }

@@ -4,6 +4,7 @@ import { Login } from "./pages/Login";
 import { Layout } from "./pages/Layout";
 import { Search } from "./pages/Search";
 import { FolderDetail } from "./pages/FolderDetail";
+import { AudioDetail } from "./pages/AudioDetail";
 
 export const router = createBrowserRouter([
   {
@@ -24,7 +25,11 @@ export const router = createBrowserRouter([
       {
         path: "/folders/:id",
         element: <FolderDetail />
-      }
+      },
+      {
+        path: "/audios/:id",
+        element: <AudioDetail />
+      },
     ]
   },
 ])
