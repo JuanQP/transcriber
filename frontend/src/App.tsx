@@ -5,8 +5,15 @@ import { RouterProvider } from 'react-router-dom';
 import { router } from './routes';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { refreshApi } from './services/auth';
+import axios from 'axios';
 
 const queryClient = new QueryClient()
+
+axios.interceptors.request.use(function (config) {
+  const token = localStorage.getItem("auth")
+  config.headers.Authorization = `Bearer ${token}`
+  return config
+})
 
 function App() {
   return (

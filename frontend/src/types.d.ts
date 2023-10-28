@@ -1,0 +1,36 @@
+type ID = string | number;
+
+type Project = {
+  id: number;
+  name: string;
+  root_folder: number;
+  owner: number;
+  audio_count: number;
+}
+
+type LeafFolder = Pick<Folder, "id" | "name">
+
+type Folder = {
+  id: number;
+  name: string;
+  children: LeafFolder[];
+  files: ListAudio[];
+  project_name: string;
+}
+
+type Audio = {
+  id: number;
+  project: number;
+  folder: number;
+  file: string;
+  status: AudioStatus;
+  subtitles: string | null;
+  transcription: string;
+}
+
+type AudioStatus = "PE" | "FI" | "TR"
+
+/**
+ * Audio shape used in lists
+ */
+type ListAudio = Pick<Audio, "id" | "project" | "folder" | "file" | "status">

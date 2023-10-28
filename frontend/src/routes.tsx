@@ -3,6 +3,7 @@ import { Projects } from "./pages/Projects";
 import { Login } from "./pages/Login";
 import { Layout } from "./pages/Layout";
 import { Search } from "./pages/Search";
+import { FolderDetail } from "./pages/FolderDetail";
 
 export const router = createBrowserRouter([
   {
@@ -19,6 +20,10 @@ export const router = createBrowserRouter([
       {
         path: "/search",
         element: <Search />
+      },
+      {
+        path: "/folders/:id",
+        element: <FolderDetail />
       }
     ]
   },

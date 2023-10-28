@@ -75,7 +75,7 @@ export function Layout() {
       <AppShell.Navbar p="md">
         <NavLink
           component={Link}
-          active={matches[1].pathname === "/"}
+          active={matches[1].pathname === "/" || !!matches[1].pathname.match(/^\/folders/)}
           to="/"
           label="Projects"
           leftSection={<IconFolder />}

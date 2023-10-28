@@ -21,6 +21,23 @@ class ProjectSerializer(serializers.ModelSerializer):
     def get_audio_count(self, obj):
         return obj.audios.count()
 
+class ProjectSerializer(serializers.ModelSerializer):
+    root_folder = serializers.PrimaryKeyRelatedField(read_only=True)
+    audio_count = serializers.IntegerField(source="audios.count", read_only=True)
+    class Meta:
+        model = Project
+        fields = [
+            "id",
+            "name",
+            "root_folder",
+            "owner",
+            "audio_count",
+        ]
+        read_only_fields = [
+            "root_folder",
+            "owner",
+        ]
+
 class AudioListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Audio
@@ -44,7 +61,6 @@ class AudioDetailSerializer(serializers.ModelSerializer):
             "folder",
             "file",
             "status",
-            "file",
             "subtitles",
             "transcription",
         ]
@@ -74,6 +90,7 @@ class FolderLeafSerializer(serializers.ModelSerializer):
 class FolderSerializer(serializers.ModelSerializer):
     files = AudioListSerializer(many=True, read_only=True)
     children = FolderLeafSerializer(many=True, read_only=True)
+    project_name = serializers.StringRelatedField(source="project.name")
     class Meta:
         model = Folder
         fields = [
@@ -81,6 +98,7 @@ class FolderSerializer(serializers.ModelSerializer):
             "name",
             "children",
             "files",
+            "project_name",
         ]
 
 class FolderCreateSerializer(serializers.ModelSerializer):
