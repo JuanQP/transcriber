@@ -1,6 +1,6 @@
-import { Button, FileButton, Flex, Loader, SimpleGrid, Stack, Text, Title } from "@mantine/core";
+import { Anchor, Breadcrumbs, Button, FileButton, Flex, Loader, SimpleGrid, Stack, Text, Title } from "@mantine/core";
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import * as folderService from "../services/folderService"
 import * as audioService from "../services/audioService"
 import { IconTrash, IconUpload } from "@tabler/icons-react";
@@ -74,7 +74,14 @@ export function FolderDetail() {
 
   return (
     <Stack>
-      <Title>{folder.project_name}</Title>
+      <Breadcrumbs style={{ flexWrap: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+        <Anchor component={Link} to="/" underline="never">
+          <Title>Projects</Title>
+        </Anchor>
+        <Title>
+          {folder.project_name}
+        </Title>
+      </Breadcrumbs>
       <Text>You can upload audios or videos here to transcribe them.</Text>
       <Flex gap="md">
         <FileButton accept="audio/*,video/*" multiple onChange={handleAudioUpload}>

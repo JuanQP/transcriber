@@ -60,7 +60,6 @@ class AudioViewSet(
         return Response({"message": "Audio will be transcribed"})
 
 class ProjectViewSet(viewsets.ModelViewSet):
-    queryset = Project.objects.all()
     serializer_class = ProjectSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ["name"]
@@ -68,6 +67,9 @@ class ProjectViewSet(viewsets.ModelViewSet):
         IsAuthenticated,
         IsOwner,
     ]
+
+    def get_queryset(self):
+        return Project.objects.filter(owner=self.request.user)
 
     def perform_create(self, serializer):
         new_project = serializer.save(owner=self.request.user)

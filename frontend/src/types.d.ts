@@ -26,6 +26,7 @@ type Audio = {
   status: AudioStatus;
   subtitles: string | null;
   transcription: string;
+  project_name: string;
 }
 
 type AudioStatus = "PE" | "FI" | "TR"

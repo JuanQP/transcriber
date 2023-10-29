@@ -53,6 +53,7 @@ class AudioListSerializer(serializers.ModelSerializer):
         ]
 
 class AudioDetailSerializer(serializers.ModelSerializer):
+    project_name = serializers.StringRelatedField(source="project.name")
     class Meta:
         model = Audio
         fields = [
@@ -63,6 +64,7 @@ class AudioDetailSerializer(serializers.ModelSerializer):
             "status",
             "subtitles",
             "transcription",
+            "project_name",
         ]
         read_only_fields = [
             "__all__"

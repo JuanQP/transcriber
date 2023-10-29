@@ -1,6 +1,6 @@
-import { Card, Flex, Loader, Stack, Text, Title } from "@mantine/core";
+import { Anchor, Breadcrumbs, Card, Flex, Loader, Stack, Text, Title } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import * as audioService from "../services/audioService"
 import { getFilename } from "../utils";
 import { MediaPlayer } from "../components/MediaPlayer";
@@ -18,7 +18,14 @@ export function AudioDetail() {
 
   return (
     <Stack>
-      <Title style={{ textOverflow: "ellipsis", overflow: "hidden" }}>{getFilename(audio.file)}</Title>
+      <Breadcrumbs style={{ flexWrap: "wrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+        <Anchor component={Link} to={`/folders/${audio.folder}`} underline="never">
+          <Title>{audio.project_name}</Title>
+        </Anchor>
+        <Title style={{ textOverflow: "ellipsis", overflow: "hidden" }}>
+          {getFilename(audio.file)}
+        </Title>
+      </Breadcrumbs>
       <Card component={Flex} justify="center" shadow="md">
         <MediaPlayer
           audio={audio}

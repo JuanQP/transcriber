@@ -54,7 +54,7 @@ export function AudioCard({isSelected = false, ...props}: Props) {
           inline
           component={Link}
           title={filename}
-          to={`/audios/${props.audio.id}`}
+          to={props.audio.status === "FI" ? `/audios/${props.audio.id}` : "#"}
           fw="bold"
           style={{
             overflow: "hidden",
