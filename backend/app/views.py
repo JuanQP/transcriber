@@ -34,6 +34,9 @@ class AudioViewSet(
     ]
     search_fields = ["file"]
 
+    def get_queryset(self):
+        return Audio.objects.prefetch_related("project").filter(project__owner=self.request.user)
+
     def get_serializer_class(self):
         if self.action == "create":
             return AudioCreateSerializer
@@ -87,6 +90,9 @@ class FolderViewSet(viewsets.ModelViewSet):
         "project",
         "parent_folder",
     ]
+
+    def get_queryset(self):
+        return Folder.objects.prefetch_related("project").filter(project__owner=self.request.user)
 
     def get_serializer_class(self):
         if self.action == "create":
