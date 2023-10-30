@@ -1,4 +1,4 @@
-import { ActionIcon, Badge, BadgeProps, Flex, Loader, MantineStyleProp, Paper, Text, rem } from "@mantine/core";
+import { ActionIcon, Badge, BadgeProps, Flex, Group, Loader, MantineStyleProp, Paper, Text, rem } from "@mantine/core";
 import { IconCheck, IconHourglass, IconRepeat } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 import { getFilename } from "../utils";
@@ -67,7 +67,12 @@ export function AudioCard({isSelected = false, ...props}: Props) {
           <IconRepeat />
         </ActionIcon>
       </Flex>
-      <Badge {...STATUS_BADGE[props.audio.status]} />
+      <Group>
+        <Badge title="Detected language">
+          {props.audio.language === "simple" ? "Others" : props.audio.language}
+        </Badge>
+        <Badge {...STATUS_BADGE[props.audio.status]} />
+      </Group>
     </Paper>
   )
 }

@@ -8,6 +8,7 @@ from app.serializers import (
     FolderCreateSerializer,
     ProjectSerializer,
 )
+from app.filters import TranscriptionSearch
 from app.permissions import IsOwner
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import decorators, filters, mixins, viewsets
@@ -27,6 +28,7 @@ class AudioViewSet(
     filter_backends = [
         DjangoFilterBackend,
         filters.SearchFilter,
+        TranscriptionSearch,
     ]
     filterset_fields = [
         "project",

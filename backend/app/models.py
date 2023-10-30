@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.postgres.search import SearchVectorField
+from django.contrib.postgres.indexes import GinIndex
 
 def audio_path(instance, filename):
     # File will be uploaded to MEDIA_ROOT/<project_id>/<filename>
@@ -37,6 +39,12 @@ class Audio(models.Model):
         FINISHED = "FI", "Finished"
         TRANSCRIBING = "TR", "Transcribing"
 
+    class Languages(models.TextChoices):
+        ENGLISH = "english", "English"
+        HINDI = "hindi", "Hindi"
+        SPANISH = "spanish", "Spanish"
+        OTHERS = "simple", "Others"
+
     project = models.ForeignKey(
         Project,
         related_name="audios",
@@ -61,3 +69,16 @@ class Audio(models.Model):
     """Transcription process status"""
     transcription = models.TextField(default="")
     """Result text of the transcription"""
+    transcription_vector = SearchVectorField(null=True)
+    """FTS Search"""
+    language = models.CharField(
+        max_length=10,
+        choices=Languages.choices,
+        default=Languages.OTHERS,
+    )
+    """Detected language in audio"""
+
+    class Meta:
+        indexes = [
+            GinIndex(fields=["transcription_vector"])
+        ]

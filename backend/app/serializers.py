@@ -47,6 +47,7 @@ class AudioListSerializer(serializers.ModelSerializer):
             "folder",
             "file",
             "status",
+            "language",
         ]
         read_only_fields = [
             "__all__"
@@ -65,6 +66,7 @@ class AudioDetailSerializer(serializers.ModelSerializer):
             "subtitles",
             "transcription",
             "project_name",
+            "language",
         ]
         read_only_fields = [
             "__all__"

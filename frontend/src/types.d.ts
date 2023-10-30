@@ -27,14 +27,16 @@ type Audio = {
   subtitles: string | null;
   transcription: string;
   project_name: string;
+  language: AudioLanguage
 }
 
 type AudioStatus = "PE" | "FI" | "TR"
+type AudioLanguage = "english" | "hindi" | "spanish" | "simple"
 
 /**
  * Audio shape used in lists
  */
-type ListAudio = Pick<Audio, "id" | "project" | "folder" | "file" | "status">
+type ListAudio = Pick<Audio, "id" | "project" | "folder" | "file" | "status" | "language">
 
 type MessageResponse = {
   message: string;
