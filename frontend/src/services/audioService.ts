@@ -1,5 +1,6 @@
 import axios from "axios";
 import { BACKEND_URL } from "../constants";
+import { AudioSearchFilters } from "../components/SearchForm";
 
 type AudioCreateSchema = {
   folder: number;
@@ -22,6 +23,15 @@ export async function get(id: ID) {
 
 export async function getAll(params: any) {
   const { data } = await axios.get<Audio[]>(`${BACKEND_URL}/audios/`, {
+    params
+  })
+  return data
+}
+
+export type AudioFTSFilters = AudioSearchFilters & { project?: null | number }
+
+export async function search(params: AudioFTSFilters) {
+  const { data } = await axios.get<ListAudio[]>(`${BACKEND_URL}/audios/`, {
     params
   })
   return data

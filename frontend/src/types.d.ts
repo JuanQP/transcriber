@@ -36,7 +36,7 @@ type AudioLanguage = "english" | "hindi" | "spanish" | "simple"
 /**
  * Audio shape used in lists
  */
-type ListAudio = Pick<Audio, "id" | "project" | "folder" | "file" | "status" | "language">
+type ListAudio = Pick<Audio, "id" | "project" | "folder" | "file" | "status" | "language" | "project_name">
 
 type MessageResponse = {
   message: string;

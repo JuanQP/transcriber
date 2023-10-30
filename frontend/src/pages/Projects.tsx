@@ -1,27 +1,43 @@
 import { Button, Flex, Loader, Modal, SimpleGrid, Stack, Text, Title } from "@mantine/core";
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import * as audioService from "../services/audioService"
 import * as projectService from "../services/projectService"
-import { IconFolderPlus, IconTrash } from "@tabler/icons-react";
-import { useState } from "react";
+import { IconFolderPlus, IconSearch, IconTrash } from "@tabler/icons-react";
+import { useEffect, useState } from "react";
 import { ProjectCard } from "../components/ProjectCard";
 import { ProjectForm, ProjectSchema } from "../components/ProjectForm";
+import { SearchModal } from "../components/SearchModal";
 
 
 export function Projects() {
+  const [selectedProjects, setSelectedProjects] = useState<number[]>([])
+  const [isProjectModalOpened, setIsProjectModalOpened] = useState(false)
+  const [audioSearchModalOpened, setAudioSearchModalOpened] = useState(false)
+  const [editProjectId, setEditProjectId] = useState<number | null>(null)
+  const [ftsSearch, setFtsSearch] = useState<audioService.AudioFTSFilters>({
+    fts_search: "",
+    project: null
+  })
+  const queryClient = useQueryClient()
+
   const { data: projects } = useQuery({
     queryKey: ["projects"],
     queryFn: projectService.getAll,
     placeholderData: keepPreviousData
   })
-  const [selectedProjects, setSelectedProjects] = useState<number[]>([])
-  const [isProjectModalOpened, setIsProjectModalOpened] = useState(false)
-  const [editProjectId, setEditProjectId] = useState<number | null>(null)
-  const queryClient = useQueryClient()
+
+  const { data: audios } = useQuery({
+    queryKey: ["search", "projects", "audios", ftsSearch.fts_search],
+    queryFn: () => audioService.search(ftsSearch),
+    placeholderData: keepPreviousData,
+    enabled: ftsSearch.fts_search !== "",
+    initialData: []
+  })
 
   const newProjectMutation = useMutation({
     mutationFn: projectService.create,
     onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: ["projects"]})
+      queryClient.invalidateQueries({ queryKey: ["projects"] })
       setIsProjectModalOpened(false)
     }
   })
@@ -29,7 +45,7 @@ export function Projects() {
   const updateProjectMutation = useMutation({
     mutationFn: (args: Parameters<typeof projectService.update>) => projectService.update(...args),
     onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: ["projects"]})
+      queryClient.invalidateQueries({ queryKey: ["projects"] })
       setIsProjectModalOpened(false)
       setEditProjectId(null)
     }
@@ -39,8 +55,12 @@ export function Projects() {
     mutationFn: (args: Parameters<typeof projectService.remove>[0]) => projectService.remove(args),
   })
 
+  useEffect(() => {
+    console.log(audios)
+  }, [audios])
+
   function handleProjectClick(id: number) {
-    if(selectedProjects.includes(id)) {
+    if (selectedProjects.includes(id)) {
       setSelectedProjects(previous => previous.filter(selectedId => selectedId !== id))
     } else {
       setSelectedProjects(previous => [...previous, id])
@@ -54,13 +74,13 @@ export function Projects() {
 
   async function handleProjectDeleteClick() {
     await Promise.allSettled(selectedProjects.map((id) => deleteProjectMutation.mutateAsync(id)))
-    queryClient.invalidateQueries({queryKey: ["projects"]})
+    queryClient.invalidateQueries({ queryKey: ["projects"] })
     setIsProjectModalOpened(false)
     setSelectedProjects([])
   }
 
   function handleSubmit(values: ProjectSchema) {
-    if(editProjectId) {
+    if (editProjectId) {
       updateProjectMutation.mutate([editProjectId, values])
     } else {
       newProjectMutation.mutate(values)
@@ -72,7 +92,7 @@ export function Projects() {
     setEditProjectId(null)
   }
 
-  if(!projects) {
+  if (!projects) {
     return <Loader />
   }
 
@@ -90,6 +110,12 @@ export function Projects() {
           onClick={() => setIsProjectModalOpened(true)}
         >
           New project
+        </Button>
+        <Button
+          leftSection={<IconSearch />}
+          onClick={() => setAudioSearchModalOpened(true)}
+        >
+          Search
         </Button>
         <Button
           disabled={selectedProjects.length === 0}
@@ -127,6 +153,12 @@ export function Projects() {
           onSubmit={handleSubmit}
         />
       </Modal>
+      <SearchModal
+        audios={audios ?? []}
+        opened={audioSearchModalOpened}
+        onClose={() => setAudioSearchModalOpened(false)}
+        onSearch={setFtsSearch}
+      />
     </Stack>
   )
 }

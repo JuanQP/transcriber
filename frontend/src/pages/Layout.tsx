@@ -6,7 +6,7 @@ import { useMutation } from "@tanstack/react-query"
 import { AppShell, Burger, Group, Loader, NavLink, Text } from "@mantine/core"
 import { FIVE_MINUTES, ONE_DAY } from "./Login"
 import { useDisclosure } from "@mantine/hooks"
-import { IconFolder, IconLogout, IconSearch } from "@tabler/icons-react"
+import { IconFolder, IconLogout } from "@tabler/icons-react"
 
 export function Layout() {
   const signIn = useSignIn()
@@ -80,13 +80,6 @@ export function Layout() {
           label="Projects"
           leftSection={<IconFolder />}
           />
-        <NavLink
-          component={Link}
-          active={matches[1].pathname === "/search"}
-          to="/search"
-          label="Search"
-          leftSection={<IconSearch />}
-        />
         <NavLink
           component={Link}
           to="/login"
