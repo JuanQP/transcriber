@@ -7,20 +7,25 @@ import { getFilename } from "../utils";
 interface Props {
   audios: ListAudio[];
   opened: boolean;
+  title?: string;
   onClose: () => void;
   onSearch: (newSearch: AudioSearchFilters) => void;
 }
 
-export function SearchModal(props: Props) {
+export function SearchModal({
+  title = "Search by audio transcription",
+  ...props
+}: Props) {
   return (
     <Modal
-      title="Search by audio transcription"
+      title={title}
       p="md"
       size="xl"
       opened={props.opened}
       onClose={props.onClose}
     >
       <SearchForm onSearch={props.onSearch} />
+      <Text c="dimmed">{props.audios.length} result(s) found</Text>
       <Stack mt="md">
         {props.audios?.map((audio, i) => (
           <React.Fragment key={audio.id}>

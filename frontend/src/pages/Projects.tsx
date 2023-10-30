@@ -154,6 +154,7 @@ export function Projects() {
         />
       </Modal>
       <SearchModal
+        title="Search audios in all your projects by transcription"
         audios={audios ?? []}
         opened={audioSearchModalOpened}
         onClose={() => setAudioSearchModalOpened(false)}

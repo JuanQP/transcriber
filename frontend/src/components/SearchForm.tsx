@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, Button, Group, TextInput } from "@mantine/core";
+import { Box, Group, TextInput } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -32,14 +32,13 @@ export function SearchForm(props: Props) {
   return (
     <Box component="form" onSubmit={handleSubmit(handleFormSubmit)}>
       <Group>
-        <TextInput label="Search text" {...register("fts_search")} />
-        <Button
-          type="submit"
+        <TextInput
           leftSection={<IconSearch />}
-          style={{ alignSelf: "end" }}
-        >
-          Search
-        </Button>
+          label="Search text"
+          placeholder="Press enter to search"
+          style={{ width: "100%" }}
+          {...register("fts_search")}
+        />
       </Group>
     </Box>
   )

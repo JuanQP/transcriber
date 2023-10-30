@@ -3,10 +3,11 @@ import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tansta
 import { Link, useParams } from "react-router-dom";
 import * as folderService from "../services/folderService"
 import * as audioService from "../services/audioService"
-import { IconTrash, IconUpload } from "@tabler/icons-react";
+import { IconSearch, IconTrash, IconUpload } from "@tabler/icons-react";
 import { AudioCard } from "../components/AudioCard";
 import { useState } from "react";
 import { AudioFilters, AudioSearchSchema } from "../components/AudioFilters";
+import { SearchModal } from "../components/SearchModal";
 
 export function FolderDetail() {
   const { id } = useParams()
@@ -25,6 +26,7 @@ export function FolderDetail() {
       "folders",
       id,
       "audios",
+      folder?.project,
       audioFilters.search,
       audioFilters.status,
     ],
@@ -34,6 +36,20 @@ export function FolderDetail() {
     }),
     placeholderData: keepPreviousData,
   })
+
+  const [ftsSearch, setFtsSearch] = useState<audioService.AudioFTSFilters>({
+    fts_search: "",
+  })
+  const [searchModalOpened, setSearchModalOpened] = useState(false)
+
+  const { data: ftsAudios } = useQuery({
+    queryKey: ["search", "projects", folder?.project, "audios", ftsSearch.fts_search],
+    queryFn: () => audioService.search({ ...ftsSearch, project: folder?.project }),
+    placeholderData: keepPreviousData,
+    enabled: ftsSearch.fts_search !== "" ,
+    initialData: []
+  })
+
   const audioUploadMutation = useMutation({
     mutationFn: audioService.create,
   })
@@ -92,6 +108,12 @@ export function FolderDetail() {
           )}
         </FileButton>
         <Button
+          leftSection={<IconSearch />}
+          onClick={() => setSearchModalOpened(true)}
+        >
+          Search
+        </Button>
+        <Button
           disabled={selectedAudios.length === 0}
           leftSection={<IconTrash />}
           color="red"
@@ -125,6 +147,13 @@ export function FolderDetail() {
           />
         ))}
       </SimpleGrid>
+      <SearchModal
+        title="Search audios in this project by transcription"
+        audios={ftsAudios}
+        opened={searchModalOpened}
+        onClose={() => setSearchModalOpened(false)}
+        onSearch={setFtsSearch}
+      />
     </Stack>
   )
 }
