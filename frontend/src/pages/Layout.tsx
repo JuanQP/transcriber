@@ -39,6 +39,8 @@ export function Layout() {
     const previousRefreshToken = localStorage.getItem("auth_refresh")
     if(previousRefreshToken) {
       tryLoginMutation.mutate(previousRefreshToken)
+    } else {
+      setWaiting(false)
     }
   }, [])
 
